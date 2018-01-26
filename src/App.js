@@ -6,7 +6,7 @@ import {
 
 import ExpenseInputPage from './components/ExpenseInputPage';
 import OverviewPage from './components/OverviewPage';
-import ConfigPage from './components/ConfigPage';
+import BudgetPage from './components/BudgetPage';
 
 import './App.css';
 class App extends Component {
@@ -16,7 +16,7 @@ class App extends Component {
         <div>
           <Route exact path="/" component={ExpenseInputPage}/>
           <Route path="/overview" component={OverviewPage}/>
-          <Route path="/settings" component={ConfigPage}/>
+          <Route path="/budget" component={BudgetPage}/>
         </div>
       </Router>
     );
