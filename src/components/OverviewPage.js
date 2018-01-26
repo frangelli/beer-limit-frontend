@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import Header from './Header';
 import _ from 'lodash';
 import uuid from 'uuid/v4';
+import moment from 'moment';
 import {
   Table,
   TableBody,
@@ -15,21 +16,46 @@ import {
 } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
 import RaisedButton from 'material-ui/RaisedButton';
-import { setStartDate, setEndDate, loadExpenses } from '../actions';
+import { setStartDate, setEndDate, loadExpenses, loadCategories } from '../actions';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 class OverviewPage extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      filteredExpenses: [],
+      category: 0
+    };
+    this.filterByDate = this.filterByDate.bind(this);
+  }
+
   componentDidMount() {
-    this.props.loadExpenses(this.props.startDate, this.props.endDate);
+    this.props.loadExpenses(this.props.startDate, this.props.endDate).then(()=> {
+      this.filterByDate();
+    });
+    if (!this.props.categories || this.props.categories.length === 0) {
+      this.props.loadCategories();
+    }
   }
 
   filterByDate() {
-    this.props.loadExpenses(this.props.startDate, this.props.endDate);
+    let filteredExpenses = _.filter(this.props.expenses, (ex) => {
+      return moment(ex.createdAt).isBetween(moment(this.props.startDate), moment(this.props.endDate));
+    });
+
+    if (this.state.category !== 0) {
+      filteredExpenses = _.filter(filteredExpenses, (ex) => {
+        return ex.category._id === this.state.category;
+      });
+    }
+    this.setState({filteredExpenses});
   }
 
   render() {
     let total = 0;
-    let expensesList = _.map(this.props.expenses, (ex) => {
+    let expensesList = _.map(this.state.filteredExpenses, (ex) => {
       total = total + parseFloat(ex.amount);
       return (
         <TableRow key={uuid()}>
@@ -38,6 +64,11 @@ class OverviewPage extends Component {
           <TableRowColumn>{ex.description}</TableRowColumn>
           <TableRowColumn>{ex.createdAt}</TableRowColumn>
         </TableRow>
+      );
+    });
+    let categoriesList = _.map(this.props.categories, (cat) => {
+      return (
+        <MenuItem key={cat._id} value={cat._id} primaryText={cat.name} />
       );
     });
     return (
@@ -63,6 +94,17 @@ class OverviewPage extends Component {
           }}
           fullWidth={true}
         />
+        <SelectField
+          floatingLabelText="Category"
+          value={this.state.category}
+          onChange={(e, index, value) => {
+            this.setState({category: value});
+          }}
+          fullWidth={true}
+        >
+          <MenuItem key={0} value={0} primaryText="All" />
+          {categoriesList}
+        </SelectField>
         <RaisedButton label="Filter"
           primary={false}
           style={{margin: 12}}
@@ -112,7 +154,8 @@ function mapStateToProps(state) {
   return {
     expenses: state.mainReducer.expenses,
     startDate: state.mainReducer.startDate,
-    endDate: state.mainReducer.endDate
+    endDate: state.mainReducer.endDate,
+    categories: state.mainReducer.categories
   };
 }
 
@@ -120,7 +163,8 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     setStartDate,
     setEndDate,
-    loadExpenses
+    loadExpenses,
+    loadCategories
   }, dispatch);
 }
 

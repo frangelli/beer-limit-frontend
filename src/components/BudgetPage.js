@@ -74,7 +74,7 @@ class BudgetPage extends Component {
           <TableRowColumn>{b.category.name}</TableRowColumn>
           <TableRowColumn>{b.limit}</TableRowColumn>
           <TableRowColumn>
-            {percentage}%
+            {Math.round(percentage)}%
             {
               <LinearProgress mode="determinate" value={percentage} />
             }
