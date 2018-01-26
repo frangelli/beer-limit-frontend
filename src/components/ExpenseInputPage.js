@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { saveExpense } from '../actions';
+import { saveExpense, loadCategories } from '../actions';
 import Header from './Header';
 import moment from 'moment';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import _ from 'lodash';
 
 class ExpenseInputPage extends Component {
 
@@ -15,11 +16,16 @@ class ExpenseInputPage extends Component {
     super(props);
     this.state = {
       amount: 0,
-      categoryId: 1,
+      category: 0,
       description: "",
       createdAt: null,
-      budgetId: null
+      budget: null
     };
+  }
+
+  componentDidMount() {
+    this.props.loadCategories();
+    this.amountInput.focus();
   }
 
   save(e) {
@@ -29,6 +35,11 @@ class ExpenseInputPage extends Component {
   }
 
   render() {
+    let categoriesList = _.map(this.props.categories, (cat) => {
+      return (
+        <MenuItem key={cat._id} value={cat._id} primaryText={cat.name} />
+      );
+    });
     return (
       <div className="container">
         <Header />
@@ -36,6 +47,7 @@ class ExpenseInputPage extends Component {
               hintText="Amount"
               floatingLabelText="Amount"
               type="number"
+              ref={(input) => { this.amountInput = input; }}
               value={this.state.amount}
               onChange={(e) => {
                 this.setState({amount: e.currentTarget.value});
@@ -44,16 +56,13 @@ class ExpenseInputPage extends Component {
             />
             <SelectField
               floatingLabelText="Category"
-              value={this.state.categoryId}
+              value={this.state.category}
               onChange={(e, index, value) => {
-                console.log(value);
-                this.setState({categoryId: value});
+                this.setState({category: value});
               }}
               fullWidth={true}
             >
-              <MenuItem value={1} primaryText="Beer" />
-              <MenuItem value={2} primaryText="Food" />
-              <MenuItem value={3} primaryText="Travel" />
+              {categoriesList}
             </SelectField>
             <TextField
               hintText="Description (Optional)"
@@ -80,13 +89,14 @@ class ExpenseInputPage extends Component {
 
 function mapStateToProps(state) {
   return {
-
+    categories: state.mainReducer.categories
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    saveExpense
+    saveExpense,
+    loadCategories
   }, dispatch);
 }
 

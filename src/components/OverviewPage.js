@@ -8,6 +8,7 @@ import {
   Table,
   TableBody,
   TableHeader,
+  TableFooter,
   TableHeaderColumn,
   TableRow,
   TableRowColumn,
@@ -27,10 +28,13 @@ class OverviewPage extends Component {
   }
 
   render() {
+    let total = 0;
     let expensesList = _.map(this.props.expenses, (ex) => {
+      total = total + parseFloat(ex.amount);
+      total = parseFloat(total).toFixed(2);
       return (
         <TableRow key={uuid()}>
-          <TableRowColumn>{ex.categoryId}</TableRowColumn>
+          <TableRowColumn>{ex.category.name}</TableRowColumn>
           <TableRowColumn>{ex.amount}</TableRowColumn>
           <TableRowColumn>{ex.description}</TableRowColumn>
           <TableRowColumn>{ex.createdAt}</TableRowColumn>
@@ -69,6 +73,7 @@ class OverviewPage extends Component {
         <Table
           selectable={false}
           multiSelectable={false}
+          fixedFooter={true}
         >
           <TableHeader
             displaySelectAll={false}
@@ -90,6 +95,14 @@ class OverviewPage extends Component {
             >
             {expensesList}
           </TableBody>
+          <TableFooter>
+            <TableRow>
+              <TableRowColumn><strong>TOTAL:</strong></TableRowColumn>
+              <TableRowColumn>{total}</TableRowColumn>
+              <TableRowColumn></TableRowColumn>
+              <TableRowColumn></TableRowColumn>
+            </TableRow>
+          </TableFooter>
         </Table>
       </div>
     );

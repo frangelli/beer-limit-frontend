@@ -2,7 +2,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  margin-top: 140px;
+  margin-top: 160px;
 }
 
 .top-bar {
@@ -16,4 +16,11 @@ body {
   top: 0px;
   left: 0px;
   right: 0px;
+  z-index: 100;
+}
+
+.budget-add-btn {
+  position: absolute;
+  bottom: 50px;
+  right: 50px;
 }

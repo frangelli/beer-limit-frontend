@@ -5,6 +5,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import {withRouter} from "react-router-dom";
 import TransactionIcon from 'material-ui/svg-icons/action/swap-horiz';
 import OverviewIcon from 'material-ui/svg-icons/action/visibility';
+import SettingsIcon from 'material-ui/svg-icons/action/settings';
 import AppBar from 'material-ui/AppBar';
 
 class Header extends Component {
@@ -17,6 +18,9 @@ class Header extends Component {
       case 2:
         this.props.history.push("/overview");
         break;
+      case 3:
+        this.props.history.push("/settings");
+        break;
       default:
 
     }
@@ -24,7 +28,14 @@ class Header extends Component {
   }
 
   render() {
-    let selectedTab = (this.props.history.location.pathname.indexOf('overview') > -1) ? 2 : 1;
+
+    let selectedTab = 1
+    const currentPath = this.props.history.location.pathname;
+    if (currentPath.indexOf('overview') > -1) {
+      selectedTab = 2;
+    } else if (currentPath.indexOf('settings') > -1) {
+      selectedTab = 3;
+    }
     return (
         <div className="main-nav">
           <AppBar iconStyleLeft={{display:'none'}} title="BEER LIMIT" className="top-bar"/>
@@ -41,6 +52,11 @@ class Header extends Component {
               icon={<OverviewIcon/>}
               label="Overview"
               value={2}>
+            </Tab>
+            <Tab
+              icon={<SettingsIcon/>}
+              label="Settings"
+              value={3}>
             </Tab>
           </Tabs>
         </div>

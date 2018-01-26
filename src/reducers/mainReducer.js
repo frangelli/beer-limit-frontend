@@ -5,12 +5,15 @@ import {
   SET_START_DATE,
   SET_END_DATE,
   LOAD_EXPENSES,
-  LOAD_CATEGORIES
+  LOAD_CATEGORIES,
+  LOAD_BUDGETS,
+  SAVE_BUDGET
 } from '../actions';
 
 const initialState = {
   expenses: [],
   categories: [],
+  budgets: [],
   startDate: moment().startOf('month').toDate(),
   endDate: moment().endOf('month').toDate()
 };
@@ -19,8 +22,11 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case SAVE_EXPENSE:
       return {
-        ...state,
-        ...{expenses: [...state.expenses, action.payload]}
+        ...state
+      };
+    case SAVE_BUDGET:
+      return {
+        ...state
       };
     case LOAD_EXPENSES:
       return {
@@ -31,6 +37,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         ...{categories: action.payload.data}
+      };
+    case LOAD_BUDGETS:
+      return {
+        ...state,
+        ...{budgets: action.payload.data}
       };
     case SET_START_DATE:
       return {
