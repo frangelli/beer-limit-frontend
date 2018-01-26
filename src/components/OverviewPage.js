@@ -19,6 +19,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { setStartDate, setEndDate, loadExpenses, loadCategories } from '../actions';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
+import { PieChart, Pie, Tooltip, Cell, Legend } from 'recharts'
 
 class OverviewPage extends Component {
 
@@ -53,14 +54,53 @@ class OverviewPage extends Component {
     this.setState({filteredExpenses});
   }
 
+  generateChartData() {
+
+    let chartdata = []
+    let categories = []
+
+    let expenses = this.props.expenses;
+
+    expenses.forEach(expense => {
+      categories.includes(expense.category.name) ? null : categories.push(expense.category.name)
+    })
+
+    categories.forEach(category => {
+      chartdata.push({ name: category, value: 0 })
+    })
+
+    expenses.forEach(expense => {
+      chartdata.forEach(singlechartdata => {
+        if (expense.category.name == singlechartdata.name) {
+          singlechartdata.value = parseFloat(singlechartdata.value) + parseFloat(expense.amount)
+        }
+      })
+    })
+
+    return chartdata;
+
+  }
+
   render() {
+
+
+    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+
+    const data01 = [{name: 'Group A', value: 400}, {name: 'Group B', value: 300},
+                  {name: 'Group C', value: 300}, {name: 'Group D', value: 200}]
+
+
+    const chartData = this.generateChartData();
+
+
     let total = 0;
     let expensesList = _.map(this.state.filteredExpenses, (ex) => {
       total = total + parseFloat(ex.amount);
       return (
         <TableRow key={uuid()}>
           <TableRowColumn>{ex.category.name}</TableRowColumn>
-          <TableRowColumn>{ex.amount}</TableRowColumn>
+          <TableRowColumn>{parseFloat(ex.amount).toFixed(2)} €</TableRowColumn>
           <TableRowColumn>{ex.description}</TableRowColumn>
           <TableRowColumn>{ex.createdAt}</TableRowColumn>
         </TableRow>
@@ -145,6 +185,14 @@ class OverviewPage extends Component {
             </TableRow>
           </TableFooter>
         </Table>
+        <hr />
+        <PieChart width={300} height={300}>
+          <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} fill="#82ca9d" label>
+            { chartData.map((entry, index) => <Cell key={index} fill={COLORS[index % COLORS.length]}/>) }
+          </Pie>
+          <Legend verticalAlign="bottom" height={36}/>
+          <Tooltip/>
+        </PieChart>
       </div>
     );
   }

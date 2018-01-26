@@ -74,7 +74,7 @@ class BudgetPage extends Component {
           <TableRowColumn>{b.category.name}</TableRowColumn>
           <TableRowColumn>{b.limit}</TableRowColumn>
           <TableRowColumn>
-            {Math.round(percentage)}%
+            {percentage.toFixed()}%
             {
               <LinearProgress mode="determinate" value={percentage} />
             }
@@ -184,7 +184,7 @@ class BudgetPage extends Component {
 function mapStateToProps(state) {
   return {
     budgets: state.mainReducer.budgets,
-    categories: state.mainReducer.categories
+    categories: state.mainReducer.categories,
   };
 }
 
@@ -196,4 +196,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(BudgetPage);
+export default connect(mapStateToProps, mapDispatchToProps)(BudgetPage);

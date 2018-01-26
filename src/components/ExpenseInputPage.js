@@ -89,6 +89,7 @@ class ExpenseInputPage extends Component {
       });
       this.amountInput.focus();
     });
+
   }
 
   render() {
