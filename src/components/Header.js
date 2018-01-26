@@ -5,7 +5,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import {withRouter} from "react-router-dom";
 import TransactionIcon from 'material-ui/svg-icons/action/swap-horiz';
 import OverviewIcon from 'material-ui/svg-icons/action/visibility';
-import SettingsIcon from 'material-ui/svg-icons/action/settings';
+import EuroIcon from 'material-ui/svg-icons/action/euro-symbol';
 import AppBar from 'material-ui/AppBar';
 
 class Header extends Component {
@@ -19,7 +19,7 @@ class Header extends Component {
         this.props.history.push("/overview");
         break;
       case 3:
-        this.props.history.push("/settings");
+        this.props.history.push("/budget");
         break;
       default:
 
@@ -33,7 +33,7 @@ class Header extends Component {
     const currentPath = this.props.history.location.pathname;
     if (currentPath.indexOf('overview') > -1) {
       selectedTab = 2;
-    } else if (currentPath.indexOf('settings') > -1) {
+    } else if (currentPath.indexOf('budget') > -1) {
       selectedTab = 3;
     }
     return (
@@ -54,8 +54,8 @@ class Header extends Component {
               value={2}>
             </Tab>
             <Tab
-              icon={<SettingsIcon/>}
-              label="Settings"
+              icon={<EuroIcon/>}
+              label="Budget"
               value={3}>
             </Tab>
           </Tabs>

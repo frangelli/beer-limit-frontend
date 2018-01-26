@@ -25,7 +25,7 @@ import LinearProgress from 'material-ui/LinearProgress';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-class ConfigPage extends Component {
+class BudgetPage extends Component {
 
   constructor(props) {
     super(props);
@@ -196,4 +196,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(ConfigPage);
+export default connect( mapStateToProps, mapDispatchToProps)(BudgetPage);
