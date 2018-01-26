@@ -1,14 +1,8 @@
-export const INCREMENT = 'INCREMENT';
-export const DECREMENT = 'DECREMENT';
+export const SAVE_EXPENSE = 'SAVE_EXPENSE';
 
-export const increment = () => {
+export const saveExpense = (expense) => {
   return {
-    type: INCREMENT
-  };
-};
-
-export const decrement = () => {
-  return {
-    type: DECREMENT
-  };
-};
+    type: SAVE_EXPENSE,
+    payload: expense
+  }
+}

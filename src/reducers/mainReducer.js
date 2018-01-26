@@ -1,23 +1,17 @@
 import {
-  INCREMENT,
-  DECREMENT
+  SAVE_EXPENSE
 } from '../actions';
 
 const initialState = {
-  count: 0
+  expenses: []
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
-    case INCREMENT:
+    case SAVE_EXPENSE:
       return {
         ...state,
-        count: state.count + 1
-      };
-    case DECREMENT:
-      return {
-        ...state,
-        count: state.count - 1
+        ...{expenses: [...state.expenses, action.payload]}
       };
     default:
       return state;
