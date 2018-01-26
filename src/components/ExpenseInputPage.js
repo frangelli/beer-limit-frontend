@@ -32,6 +32,7 @@ class ExpenseInputPage extends Component {
     e.preventDefault();
     let objToSave = Object.assign({}, this.state, {createdAt: moment().format()});
     this.props.saveExpense(objToSave);
+    this.setState({ amount: 0,  category: 0, description: ""})
   }
 
   render() {
