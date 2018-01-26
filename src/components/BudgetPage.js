@@ -91,15 +91,6 @@ class BudgetPage extends Component {
     return (
       <div className="container">
         <Header/>
-        <DatePicker
-          floatingLabelText="Budged Date"
-          autoOk={true}
-          hintText="Budget Date"
-          onChange={(e, date) => {
-            this.props.filterByDate(date);
-          }}
-          fullWidth={true}
-        />
         <Table
           selectable={false}
           multiSelectable={false}

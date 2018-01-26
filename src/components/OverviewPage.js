@@ -59,7 +59,7 @@ class OverviewPage extends Component {
     let chartdata = []
     let categories = []
 
-    let expenses = this.props.expenses;
+    let expenses = this.state.filteredExpenses;
 
     expenses.forEach(expense => {
       categories.includes(expense.category.name) ? null : categories.push(expense.category.name)
