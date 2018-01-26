@@ -17,14 +17,14 @@ class ExpenseInputPage extends Component {
       amount: 0,
       categoryId: 1,
       description: "",
-      date: null
+      createdAt: null,
+      budgetId: null
     };
   }
 
   save(e) {
     e.preventDefault();
-    let objToSave = Object.assign({}, this.state, {date: moment().format()});
-    console.log(objToSave);
+    let objToSave = Object.assign({}, this.state, {createdAt: moment().format()});
     this.props.saveExpense(objToSave);
   }
 

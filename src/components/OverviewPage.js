@@ -13,11 +13,17 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import DatePicker from 'material-ui/DatePicker';
+import RaisedButton from 'material-ui/RaisedButton';
+import { setStartDate, setEndDate, loadExpenses } from '../actions';
 
 class OverviewPage extends Component {
 
   componentDidMount() {
-    //load all the stuff
+    this.props.loadExpenses(this.props.startDate, this.props.endDate);
+  }
+
+  filterByDate() {
+    this.props.loadExpenses(this.props.startDate, this.props.endDate);
   }
 
   render() {
@@ -27,7 +33,7 @@ class OverviewPage extends Component {
           <TableRowColumn>{ex.categoryId}</TableRowColumn>
           <TableRowColumn>{ex.amount}</TableRowColumn>
           <TableRowColumn>{ex.description}</TableRowColumn>
-          <TableRowColumn>{ex.date}</TableRowColumn>
+          <TableRowColumn>{ex.createdAt}</TableRowColumn>
         </TableRow>
       );
     });
@@ -35,10 +41,31 @@ class OverviewPage extends Component {
       <div className="container">
         <Header/>
         <DatePicker
-          hintText="Controlled Date Input"
-          value={this.state.controlledDate}
-          onChange={this.handleChange}
+          floatingLabelText="Start Date"
+          autoOk={true}
+          hintText="Start Date"
+          value={this.props.startDate}
+          onChange={(e, date) => {
+            this.props.setStartDate(date);
+          }}
+          fullWidth={true}
         />
+        <DatePicker
+          floatingLabelText="End Date"
+          autoOk={true}
+          hintText="End Date"
+          value={this.props.endDate}
+          onChange={(e, date) => {
+            this.props.setEndDate(date);
+          }}
+          fullWidth={true}
+        />
+        <RaisedButton label="Filter"
+          primary={false}
+          style={{margin: 12}}
+          fullWidth={true}
+          onClick={this.filterByDate.bind(this)}
+           />
         <Table
           selectable={false}
           multiSelectable={false}
@@ -71,12 +98,17 @@ class OverviewPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    expenses: state.mainReducer.expenses
+    expenses: state.mainReducer.expenses,
+    startDate: state.mainReducer.startDate,
+    endDate: state.mainReducer.endDate
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
+    setStartDate,
+    setEndDate,
+    loadExpenses
   }, dispatch);
 }
 
