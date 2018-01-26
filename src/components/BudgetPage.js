@@ -74,7 +74,7 @@ class BudgetPage extends Component {
           <TableRowColumn>{b.category.name}</TableRowColumn>
           <TableRowColumn>{b.limit}</TableRowColumn>
           <TableRowColumn>
-            {percentage}%
+            {percentage.toFixed()}%
             {
               <LinearProgress mode="determinate" value={percentage} />
             }
