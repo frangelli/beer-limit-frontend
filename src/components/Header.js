@@ -6,6 +6,7 @@ import {withRouter} from "react-router-dom";
 import TransactionIcon from 'material-ui/svg-icons/action/swap-horiz';
 import OverviewIcon from 'material-ui/svg-icons/action/visibility';
 import EuroIcon from 'material-ui/svg-icons/action/euro-symbol';
+import CategoryIcon from 'material-ui/svg-icons/action/assignment';
 import AppBar from 'material-ui/AppBar';
 
 class Header extends Component {
@@ -21,6 +22,9 @@ class Header extends Component {
       case 3:
         this.props.history.push("/budget");
         break;
+      case 4:
+        this.props.history.push("/categories");
+        break;
       default:
 
     }
@@ -35,6 +39,8 @@ class Header extends Component {
       selectedTab = 2;
     } else if (currentPath.indexOf('budget') > -1) {
       selectedTab = 3;
+    } else if (currentPath.indexOf('categories') > -1) {
+      selectedTab = 4;
     }
     return (
         <div className="main-nav">
@@ -57,6 +63,11 @@ class Header extends Component {
               icon={<EuroIcon/>}
               label="Budget"
               value={3}>
+            </Tab>
+            <Tab
+              icon={<CategoryIcon/>}
+              label="Categories"
+              value={4}>
             </Tab>
           </Tabs>
         </div>

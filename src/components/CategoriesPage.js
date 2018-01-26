@@ -20,34 +20,27 @@ import DatePicker from 'material-ui/DatePicker';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton'
-import { loadBudgets, loadCategories, saveBudget } from '../actions';
+import { loadCategories, saveCategory } from '../actions';
 import LinearProgress from 'material-ui/LinearProgress';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 
-class BudgetPage extends Component {
+class CategoriesPage extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
-      showBudgetModal: false,
-      category: null,
-      limit: 0
+      showCategoryModal: false,
+      name: ""
     };
   }
+
   componentDidMount() {
-    this.props.loadBudgets();
-    if (!this.props.categories || this.props.categories.length === 0) {
-      this.props.loadCategories();
-    }
+    this.props.loadCategories();
   }
 
-  filterByDate(date) {
-    console.log('filter budget by date');
-  }
-
-  saveBudget() {
-    if (!this.state.category || this.state.limit <= 0) {
+  saveCategory() {
+    if (!this.state.name === "") {
       window.alert('All the values are mandatory!!!');
       return;
     }
@@ -56,50 +49,26 @@ class BudgetPage extends Component {
       limit: this.state.limit
     }
 
-    this.props.saveBudget(objToSave).then(() => {
+    this.props.saveCategory(objToSave).then(() => {
       this.setState({
-        showBudgetModal: false,
-        limit: 0,
-        category: null
+        showCategoryModal: false,
+        name: ""
       });
-      this.props.loadBudgets();
+      this.props.loadCategories();
     });
   }
 
   render() {
-    let budgetsList = _.map(this.props.budgets, (b) => {
-      let percentage = (b.current * 100) / b.limit;
+    let categoriesList = _.map(this.props.categories, (c) => {
       return (
         <TableRow key={uuid()}>
-          <TableRowColumn>{b.category.name}</TableRowColumn>
-          <TableRowColumn>{b.limit}</TableRowColumn>
-          <TableRowColumn>
-            {percentage}%
-            {
-              <LinearProgress mode="determinate" value={percentage} />
-            }
-          </TableRowColumn>
-          <TableRowColumn>{moment(b.createdAt).format('MM.YYYY')}</TableRowColumn>
+          <TableRowColumn>{c.name}</TableRowColumn>
         </TableRow>
-      );
-    });
-    let categoriesList = _.map(this.props.categories, (cat) => {
-      return (
-        <MenuItem key={cat._id} value={cat._id} primaryText={cat.name} />
       );
     });
     return (
       <div className="container">
         <Header/>
-        <DatePicker
-          floatingLabelText="Budged Date"
-          autoOk={true}
-          hintText="Budget Date"
-          onChange={(e, date) => {
-            this.props.filterByDate(date);
-          }}
-          fullWidth={true}
-        />
         <Table
           selectable={false}
           multiSelectable={false}
@@ -110,10 +79,7 @@ class BudgetPage extends Component {
             enableSelectAll={false}
             >
             <TableRow>
-              <TableHeaderColumn>Category</TableHeaderColumn>
-              <TableHeaderColumn>Limit</TableHeaderColumn>
-              <TableHeaderColumn>%</TableHeaderColumn>
-              <TableHeaderColumn>Date</TableHeaderColumn>
+              <TableHeaderColumn>Name</TableHeaderColumn>
             </TableRow>
           </TableHeader>
           <TableBody
@@ -122,54 +88,44 @@ class BudgetPage extends Component {
             showRowHover={true}
             stripedRows={true}
             >
-            {budgetsList}
+            {categoriesList}
           </TableBody>
         </Table>
         <FloatingActionButton
           className="add-btn"
           onClick={() => {
-            this.setState({showBudgetModal: true});
+            this.setState({showCategoryModal: true});
           }}
           >
           <ContentAdd />
         </FloatingActionButton>
         <Dialog
-          title="Add new Budget"
+          title="Add new Category"
           actions={
             [
               <FlatButton
                 label="Cancel"
                 primary={false}
                 onClick={(e) => {
-                  this.setState({showBudgetModal: false});
+                  this.setState({showCategoryModal: false});
                 }}
               />,
               <FlatButton
-                label="Save Budget"
+                label="Save Category"
                 primary={true}
-                onClick={this.saveBudget.bind(this)}
+                onClick={this.saveCategory.bind(this)}
               />,
             ]
           }
           modal={true}
-          open={this.state.showBudgetModal}
+          open={this.state.showCategoryModal}
         >
-          <SelectField
-            floatingLabelText="Category"
-            value={this.state.category}
-            onChange={(e, index, value) => {
-              this.setState({category: value});
-            }}
-            fullWidth={true}
-          >
-          {categoriesList}
-          </SelectField>
           <TextField
-            hintText="Limit"
-            floatingLabelText="Limit"
-            type="number"
-            ref={(input) => { this.limitInput = input; }}
-            value={this.state.limit}
+            hintText="Name"
+            floatingLabelText="Name"
+            type="text"
+            ref={(input) => { this.categoryNameInput = input; }}
+            value={this.state.name}
             onChange={(e) => {
               this.setState({limit: e.currentTarget.value});
             }}
@@ -183,17 +139,15 @@ class BudgetPage extends Component {
 
 function mapStateToProps(state) {
   return {
-    budgets: state.mainReducer.budgets,
     categories: state.mainReducer.categories
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    loadBudgets,
     loadCategories,
-    saveBudget
+    saveCategory
   }, dispatch);
 }
 
-export default connect( mapStateToProps, mapDispatchToProps)(BudgetPage);
+export default connect( mapStateToProps, mapDispatchToProps)(CategoriesPage);

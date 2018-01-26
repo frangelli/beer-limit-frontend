@@ -19,7 +19,7 @@ body {
   z-index: 100;
 }
 
-.budget-add-btn {
+.add-btn {
   position: absolute;
   bottom: 50px;
   right: 50px;
