@@ -7,7 +7,8 @@ import {
   LOAD_EXPENSES,
   LOAD_CATEGORIES,
   LOAD_BUDGETS,
-  SAVE_BUDGET
+  SAVE_BUDGET,
+  SAVE_CATEGORY
 } from '../actions';
 
 const initialState = {
@@ -25,6 +26,10 @@ export default (state = initialState, action) => {
         ...state
       };
     case SAVE_BUDGET:
+      return {
+        ...state
+      };
+    case SAVE_CATEGORY:
       return {
         ...state
       };

@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import Header from './Header';
 import _ from 'lodash';
 import uuid from 'uuid/v4';
-import moment from 'moment';
 import {
   Table,
   TableBody,
@@ -14,9 +13,6 @@ import {
   TableRowColumn,
 } from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
-import SelectField from 'material-ui/SelectField';
-import MenuItem from 'material-ui/MenuItem';
-import DatePicker from 'material-ui/DatePicker';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton'
@@ -45,8 +41,7 @@ class CategoriesPage extends Component {
       return;
     }
     let objToSave = {
-      category: this.state.category,
-      limit: this.state.limit
+      name: this.state.name
     }
 
     this.props.saveCategory(objToSave).then(() => {
@@ -127,7 +122,7 @@ class CategoriesPage extends Component {
             ref={(input) => { this.categoryNameInput = input; }}
             value={this.state.name}
             onChange={(e) => {
-              this.setState({limit: e.currentTarget.value});
+              this.setState({name: e.currentTarget.value});
             }}
             fullWidth={true}
           />

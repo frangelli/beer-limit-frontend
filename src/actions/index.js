@@ -3,6 +3,7 @@ import axios from 'axios';
 
 export const SAVE_EXPENSE = 'SAVE_EXPENSE';
 export const SAVE_BUDGET = 'SAVE_BUDGET';
+export const SAVE_CATEGORY = 'SAVE_CATEGORY';
 export const LOAD_EXPENSES = 'LOAD_EXPENSES';
 export const LOAD_CATEGORIES = 'LOAD_CATEGORIES';
 export const LOAD_BUDGETS = 'LOAD_BUDGETS';
@@ -39,6 +40,14 @@ export const saveBudget = (budget) => {
   let req = axios.post(`${SERVER_API_ROOT}/budgets`, budget);
   return {
     type: SAVE_BUDGET,
+    payload: req
+  }
+}
+
+export const saveCategory = (category) => {
+  let req = axios.post(`${SERVER_API_ROOT}/categories`, category);
+  return {
+    type: SAVE_CATEGORY,
     payload: req
   }
 }
