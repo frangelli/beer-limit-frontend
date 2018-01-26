@@ -186,8 +186,8 @@ class OverviewPage extends Component {
           </TableFooter>
         </Table>
         <hr />
-        <PieChart width={300} height={300}>
-          <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={80} fill="#82ca9d" label>
+        <PieChart width={500} height={500} style={{ margin: '0 auto'}}>
+          <Pie data={chartData} dataKey="value" nameKey="name" cx="50%" cy="50%" outerRadius={200} fill="#82ca9d" label>
             { chartData.map((entry, index) => <Cell key={index} fill={COLORS[index % COLORS.length]}/>) }
           </Pie>
           <Legend verticalAlign="bottom" height={36}/>
