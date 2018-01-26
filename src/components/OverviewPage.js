@@ -31,7 +31,6 @@ class OverviewPage extends Component {
     let total = 0;
     let expensesList = _.map(this.props.expenses, (ex) => {
       total = total + parseFloat(ex.amount);
-      total = parseFloat(total).toFixed(2);
       return (
         <TableRow key={uuid()}>
           <TableRowColumn>{ex.category.name}</TableRowColumn>
@@ -98,7 +97,7 @@ class OverviewPage extends Component {
           <TableFooter>
             <TableRow>
               <TableRowColumn><strong>TOTAL:</strong></TableRowColumn>
-              <TableRowColumn>{total}</TableRowColumn>
+              <TableRowColumn>{total.toFixed(2)}</TableRowColumn>
               <TableRowColumn></TableRowColumn>
               <TableRowColumn></TableRowColumn>
             </TableRow>
